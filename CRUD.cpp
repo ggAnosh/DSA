@@ -243,5 +243,7 @@ int main()
   delete[] arr;
   delete[] pSize;
 
+  cout << "New work done here!" << endl;
+
   return 0;
 }
