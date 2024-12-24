@@ -5,11 +5,9 @@ int **arr, *pSize, totalArray = 0;
 
 void printArray()
 {
-
   for (int i = 0; i < totalArray; ++i)
   {
     cout << "Element of array " << i + 1 << endl;
-
     for (int j = 0; j < pSize[i]; ++j)
     {
       cout << arr[i][j] << " ";
@@ -18,34 +16,77 @@ void printArray()
   }
 }
 
+void checkRepated()
+{
+  // Loop over all arrays
+  for (int i = 0; i < totalArray; ++i)
+  {
+    int newSize = pSize[i]; // Keep track of the new size
+
+    // Traverse each element in the array
+    for (int j = 0; j < newSize; ++j)
+    {
+      // Check for duplicates after the current element
+      for (int k = j + 1; k < newSize; ++k)
+      {
+        // If a duplicate is found
+        if (arr[i][j] == arr[i][k])
+        {
+          // Shift all elements after the duplicate to the left
+          for (int l = k; l < newSize - 1; ++l)
+          {
+            arr[i][l] = arr[i][l + 1];
+          }
+
+          // Decrease the new size
+          newSize--;
+          k--; // Recheck the current index as it might now contain a duplicate
+        }
+      }
+    }
+
+    // After removing duplicates, update the size of the array
+    pSize[i] = newSize;
+  }
+}
+
 void getData()
 {
   cout << "Enter how many arrays do you want to create?" << endl;
   cin >> choice;
 
-  arr = new int *[choice];
-  pSize = new int[choice];
-
-  for (int i = 0; i < choice; ++i)
+  if (choice > 0)
   {
-    cout << "Enter the size for array " << i + 1 << ": ";
-    cin >> aSize;
 
-    arr[i] = new int[aSize];
-    pSize[i] = aSize;
+    arr = new int *[choice];
+    pSize = new int[choice];
 
-    cout << "Enter the elements for array " << i + 1 << ": " << endl;
-    for (int j = 0; j < aSize; ++j)
+    for (int i = 0; i < choice; ++i)
     {
-      cin >> arr[i][j];
+      cout << "Enter the size for array " << i + 1 << ": ";
+      cin >> aSize;
+
+      arr[i] = new int[aSize];
+      pSize[i] = aSize;
+
+      cout << "Enter the elements for array " << i + 1 << ": " << endl;
+      for (int j = 0; j < aSize; ++j)
+      {
+        cin >> arr[i][j];
+      }
+      // Call checkRepated to remove duplicates after data entry
+      checkRepated();
     }
+    totalArray = choice;
   }
-  totalArray = choice;
+  else
+  {
+    cout << "Enter a valid numebr starting from 1." << endl;
+  }
 }
 
 void deleteElement()
 {
-
   int arrIndex, arrValue;
 
   cout << "The array has the following values: " << endl;
@@ -53,59 +94,80 @@ void deleteElement()
 
   cout << "Enter which array do you want to do the delete command. " << endl;
   cin >> arrIndex;
-
   --arrIndex;
 
-  cout << "Enter which value you want to delete of the array." << endl;
-  cin >> arrValue;
-
-  cout << "Before deleting: " << endl;
-
-  for (int i = 0; i < pSize[arrIndex]; ++i)
-  {
-    cout << arr[arrIndex][i] << " ";
-  }
-  cout << endl;
-
-  for (int i = 0; i < pSize[arrIndex]; ++i)
+  if (arrIndex > 0 && arrIndex < totalArray)
   {
 
-    if (arr[arrIndex][i] == arrValue)
+    cout << "Enter which value you want to delete of the array." << endl;
+    cin >> arrValue;
+
+    bool found = false;
+
+    for (int i = 0; i < pSize[arrIndex]; ++i)
     {
-      for (int j = i; j < pSize[arrIndex] - 1; ++j)
+      if (arr[arrIndex][i] == arrValue)
       {
-        int temp = arr[arrIndex][j];
-        arr[arrIndex][j] = arr[arrIndex][j + 1];
-        arr[arrIndex][j + 1] = temp;
+        found = true;
+        break;
       }
     }
+
+    if (found)
+    {
+
+      cout << "Before deleting: " << endl;
+
+      for (int i = 0; i < pSize[arrIndex]; ++i)
+      {
+        cout << arr[arrIndex][i] << " ";
+      }
+      cout << endl;
+
+      for (int i = 0; i < pSize[arrIndex]; ++i)
+      {
+        if (arr[arrIndex][i] == arrValue)
+        {
+          for (int j = i; j < pSize[arrIndex] - 1; ++j)
+          {
+            int temp = arr[arrIndex][j];
+            arr[arrIndex][j] = arr[arrIndex][j + 1];
+            arr[arrIndex][j + 1] = temp;
+          }
+        }
+      }
+
+      pSize[arrIndex]--;
+
+      cout << "After deleting the element: " << endl;
+
+      for (int i = 0; i < pSize[arrIndex]; ++i)
+      {
+        cout << arr[arrIndex][i] << " ";
+      }
+      cout << endl;
+    }
+    else
+    {
+      cout << "The element is not present in the array." << endl;
+    }
   }
-
-  pSize[arrIndex]--;
-
-  cout << "After deleting the element: " << endl;
-
-  for (int i = 0; i < pSize[arrIndex]; ++i)
+  else
   {
-    cout << arr[arrIndex][i] << " ";
+    cout << "There is no such array that you are prefering." << endl;
   }
-  cout << endl;
 }
 
 void sortArray()
 {
-
   cout << "Sorting in ascending order " << endl;
 
   for (int i = 0; i < choice; ++i)
   {
-
     for (int j = 0; j < pSize[i]; ++j)
     {
-
       for (int k = j + 1; k < pSize[i]; ++k)
       {
-
         if (arr[i][j] > arr[i][k])
         {
           int temp = arr[i][k];
@@ -122,13 +184,10 @@ void sortArray()
 
   for (int i = 0; i < choice; ++i)
   {
-
     for (int j = 0; j < pSize[i]; ++j)
     {
-
       for (int k = j + 1; k < pSize[i]; ++k)
       {
-
         if (arr[i][j] < arr[i][k])
         {
           int temp = arr[i][k];
@@ -143,7 +202,6 @@ void sortArray()
 
 void mergeArray()
 {
-
   cout << "The array we have: " << endl;
   printArray();
 
@@ -159,8 +217,6 @@ void mergeArray()
   int firstArray = arrIndex[0] - 1;
   int secArray = arrIndex[1] - 1;
 
-  cout << totalArray << endl;
-
   arr[totalArray] = new int[pSize[firstArray] + pSize[secArray]];
   pSize[totalArray] = pSize[firstArray] + pSize[secArray];
 
@@ -174,6 +230,8 @@ void mergeArray()
     arr[totalArray][pSize[firstArray] + i] = arr[secArray][i];
   }
 
+  checkRepated();
+
   cout << "After merging the array: " << endl;
 
   for (int i = 0; i < pSize[totalArray]; ++i)
@@ -183,20 +241,16 @@ void mergeArray()
   cout << endl;
 
   ++totalArray;
-
-  // delete[] farr;
 }
 
 int main()
 {
-
   char choice;
 
   string ch = "A";
 
   while (ch == "A")
   {
-
     cout << "Enter your choice:" << endl;
     cout << "A. Enter any element in the array." << endl;
     cout << "B. Delete any element in the array." << endl;
@@ -242,8 +296,6 @@ int main()
 
   delete[] arr;
   delete[] pSize;
-
-  cout << "New work done here!" << endl;
 
   return 0;
 }
