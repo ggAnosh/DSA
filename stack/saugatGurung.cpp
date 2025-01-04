@@ -24,12 +24,12 @@ public:
 
   bool isEmpty()
   {
-    return (index == -1) ? true : false;
+    return (index <= -1) ? true : false;
   }
 
   bool isFull()
   {
-    return (index == size - 1) ? true : false;
+    return (index >= size - 1) ? true : false;
   }
 
   void push()
@@ -71,7 +71,7 @@ public:
     if (!isEmpty())
     {
       cout << "Displaying elements from the top of the stack: " << endl;
-      for (int i = index; i >= 0; ++i)
+      for (int i = index; i >= 0; --i)
       {
 
         cout << stack[i] << " ";
@@ -80,6 +80,19 @@ public:
     else
     {
       cout << "The stack is empty." << endl;
+    }
+  }
+
+  void topEl()
+  {
+
+    if (isEmpty())
+    {
+      cout << "The stack is empty." << endl;
+    }
+    else
+    {
+      cout << stack[index] << endl;
     }
   }
 };
@@ -102,6 +115,7 @@ int main()
     cout << "C. Find if stack is empty." << endl;
     cout << "D. Find if stack is full." << endl;
     cout << "E. Traverse each element of the stack." << endl;
+    cout << "F. Element on the top of stack." << endl;
 
     cin >> choice;
 
@@ -139,6 +153,10 @@ int main()
 
     case 'E':
       s1.traverse();
+      break;
+
+    case 'F':
+      s1.topEl();
       break;
     }
 
