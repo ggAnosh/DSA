@@ -1,0 +1,12 @@
+Queue: A Queue is an ordered collection of items from which items may be deleted at one end(called front of the queue) and into which items may be inserted at the other end(rear);
+
+FIFO : First In First Out {PRINCIPLE}.
+
+Enqueue and Dequeue: Two major operations of Queue.
+
+Limitations: 
+ 1. Fixed Size, 
+ 2. Underutilization, 
+
+ Circular Queue: When rear pointer reaches to the end of the array, it wraps around to the begining, 
+ 
